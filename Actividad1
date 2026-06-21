@@ -1,0 +1,150 @@
+//Crear Tablas
+
+CREATE DATABASE TiendaSara;
+GO
+
+USE TiendaSara;
+GO
+
+CREATE TABLE Categorias(
+    IdCategoria INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Marcas(
+    IdMarca INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Productos(
+    IdProducto INT IDENTITY(1,1) PRIMARY KEY,
+    Descripcion VARCHAR(150) NOT NULL,
+    Precio DECIMAL(10,2) NOT NULL,
+    Cantidad INT NOT NULL,
+    IdCategoria INT NOT NULL,
+    IdMarca INT NOT NULL,
+
+    FOREIGN KEY (IdCategoria)
+        REFERENCES Categorias(IdCategoria),
+
+    FOREIGN KEY (IdMarca)
+        REFERENCES Marcas(IdMarca)
+);
+
+CREATE TABLE Carrito(
+    IdCarrito INT IDENTITY(1,1) PRIMARY KEY,
+    FolioVenta VARCHAR(20) NOT NULL,
+    TotalCompra DECIMAL(10,2),
+    Estatus VARCHAR(30),
+    Fecha DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE CarritoDetalle(
+    IdDetalle INT IDENTITY(1,1) PRIMARY KEY,
+    IdCarrito INT NOT NULL,
+    IdProducto INT NOT NULL,
+    Cantidad INT NOT NULL,
+    Subtotal DECIMAL(10,2) NOT NULL,
+
+    FOREIGN KEY (IdCarrito)
+        REFERENCES Carrito(IdCarrito),
+
+//Insertar Datos
+
+INSERT INTO Categorias VALUES ('Laptops');
+INSERT INTO Categorias VALUES ('Celulares');
+INSERT INTO Categorias VALUES ('Tablets');
+INSERT INTO Categorias VALUES ('Monitores');
+INSERT INTO Categorias VALUES ('Accesorios');
+
+INSERT INTO Marcas VALUES ('HP');
+INSERT INTO Marcas VALUES ('Dell');
+INSERT INTO Marcas VALUES ('Samsung');
+INSERT INTO Marcas VALUES ('Apple');
+INSERT INTO Marcas VALUES ('Lenovo');
+
+INSERT INTO Productos VALUES
+('Laptop HP 15',15000,10,1,1);
+
+INSERT INTO Productos VALUES
+('Dell Inspiron',18000,8,1,2);
+
+INSERT INTO Productos VALUES
+('Galaxy S23',17000,15,2,3);
+
+INSERT INTO Productos VALUES
+('iPad Air',14000,12,3,4);
+
+INSERT INTO Productos VALUES
+('Monitor Lenovo',5000,20,4,5);
+
+INSERT INTO Carrito
+(FolioVenta,TotalCompra,Estatus,Fecha)
+VALUES
+('FV001',15000,'Pagado',GETDATE()),
+('FV002',18000,'Pagado',GETDATE()),
+('FV003',17000,'Pendiente',GETDATE()),
+('FV004',14000,'Pagado',GETDATE()),
+('FV005',5000,'Pendiente',GETDATE());
+
+INSERT INTO CarritoDetalle
+(IdCarrito,IdProducto,Cantidad,Subtotal)
+VALUES
+(1,1,1,15000),
+(2,2,1,18000),
+(3,3,1,17000),
+(4,4,1,14000),
+(5,5,1,5000);
+
+
+//Consultas
+
+
+SELECT
+p.IdProducto,
+p.Descripcion AS Producto,
+p.Precio,
+c.Descripcion AS Categoria,
+m.Descripcion AS Marca
+FROM Productos p
+INNER JOIN Categorias c
+ON p.IdCategoria = c.IdCategoria
+INNER JOIN Marcas m
+ON p.IdMarca = m.IdMarca;
+
+
+SELECT
+c.FolioVenta,
+p.Descripcion,
+cd.Cantidad,
+cd.Subtotal
+FROM Carrito c
+INNER JOIN CarritoDetalle cd
+ON c.IdCarrito = cd.IdCarrito
+INNER JOIN Productos p
+ON cd.IdProducto = p.IdProducto;
+
+
+SELECT
+c.FolioVenta,
+p.Descripcion AS Producto,
+m.Descripcion AS Marca,
+ca.Descripcion AS Categoria,
+cd.Cantidad,
+cd.Subtotal
+FROM Carrito c
+INNER JOIN CarritoDetalle cd
+ON c.IdCarrito = cd.IdCarrito
+INNER JOIN Productos p
+ON cd.IdProducto = p.IdProducto
+INNER JOIN Marcas m
+ON p.IdMarca = m.IdMarca
+INNER JOIN Categorias ca
+ON p.IdCategoria = ca.IdCategoria;
+
+
+
+
+    FOREIGN KEY (IdProducto)
+        REFERENCES Productos(IdProducto)
+);
