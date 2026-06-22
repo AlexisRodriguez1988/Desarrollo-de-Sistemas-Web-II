@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Best Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <h1 class="text-center my-4">Products</h1>
+        <a class="btn btn-primary mb-3" href="/products/create">Create Product</a>
+        
+        <table class="table table-striped border align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Amount</th>
+              <th>Category</th>
+              <th>Mark</th>
+              <th>Image</th>
+              <th>Created At</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="product : ${products}">
+              <td th:text="${product.id}"></td>
+              <td th:text="${product.description}"></td>
+              <td th:text="${'$' + product.price}"></td>
+              <td th:text="${product.amount}"></td>
+              <td th:text="${product.category != null ? product.category.description : 'N/A'}"></td>
+              <td th:text="${product.mark != null ? product.mark.description : 'N/A'}"></td>
+              <td>
+                <img th:src="@{'/images/' + ${product.imageFileName}}" alt="Product image" width="100" class="img-thumbnail">
+              </td>
+              <td th:text="${#dates.format(product.createdAt, 'yyyy-MM-dd')}"></td>
+              <td style="white-space:nowrap">
+                   <a class="btn btn-primary btn-sm" th:href="@{/products/edit(id=${product.id})}">Edit</a> 
+                   <a class="btn btn-danger btn-sm" th:href="@{/products/delete(id=${product.id})}" onclick="return confirm('Are you sure?')">Delete</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

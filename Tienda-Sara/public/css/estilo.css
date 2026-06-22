@@ -1,0 +1,61 @@
+body{
+    background-color:#f8f9fa;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navbar-brand{
+    font-size:1.5rem;
+    font-weight:bold;
+}
+
+.carousel img{
+    height:450px;
+    object-fit:cover;
+}
+
+.card{
+    border:none;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+}
+
+.card img{
+    height:250px;
+    object-fit:cover;
+}
+
+.categoria{
+    transition:0.3s;
+    cursor:pointer;
+}
+
+.categoria:hover{
+    background:#0d6efd;
+    color:white;
+}
+
+footer{
+    margin-top:50px;
+}
+
+.precio{
+    color:#198754;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.resumen{
+    border-left:5px solid #198754;
+}
+
+.btn{
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:scale(1.03);
+}
